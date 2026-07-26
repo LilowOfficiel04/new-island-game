@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NEW ISLAND - L'Île de la Tentation</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,800;0,900;1,800&display=swap" rel="stylesheet">
+<style>
+@keyframes subtle-breeze {
+  0% { transform: scale(1) translate(0, 0); }
+  50% { transform: scale(1.03) translate(-3px, -2px); }
+  100% { transform: scale(1) translate(0, 0); }
+}
+
+body, html {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #0b0b0b;
+  font-family: 'Montserrat', sans-serif;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+#game-container {
+  width: 100%;
+  max-width: 450px;
+  height: 100%;
+  max-height: 800px;
+  background: linear-gradient(135deg, rgba(15, 12, 41, 0.9), rgba(48, 43, 99, 0.9)),
+    radial-gradient(circle at top, #ff5e62 0%, transparent 70%);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 0 40px rgba(0,0,0,0.9);
+  text-align: center;
+  padding: 25px;
+  box-sizing: border-box;
+  overflow: hidden;
+  transition: background 0.6s ease;
+  animation: subtle-breeze 15s ease-in-out infinite alternate;
+}
+
+#game-container.bg-tempuras {
+  background:
+    url('Tempuras.PNG') center/cover no-repeat,
+    linear-gradient(135deg, rgba(43, 11, 24, 0.9), rgba(97, 21, 50, 0.9)),
+    radial-gradient(circle at top, #ff3366 0%, transparent 70%) !important;
+  background-size: cover, auto, auto;
+}
+
+#game-container.bg-lagoon {
+  background:
+    url('Lagoon.PNG') center/cover no-repeat,
+    linear-gradient(135deg, rgba(9, 30, 58, 0.9), rgba(17, 67, 87, 0.9)),
+    radial-gradient(circle at top, #0f769c 0%, transparent 70%) !important;
+  background-size: cover, auto, auto;
+}
+
+.screen {
+  display: none;
+  width: 100%;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.active {
+  display: flex;
+}
+
+h1.game-title {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 900;
+  font-style: italic;
+  font-size: 2.5em;
+  letter-spacing: 2px;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  background: linear-gradient(to bottom, #ff9966, #ff5e62, #ff3366);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 4px 10px rgba(255, 94, 98, 0.4));
+}
+
+p {
+  font-size: 0.85em;
+  margin-bottom: 20px;
+  color: #dcdde1;
+  line-height: 1.4;
+}
+
+.btn {
+  background: linear-gradient(to right, #ff5e62, #ff9966);
+  color: white;
+  border: none;
+  padding: 12px 18px;
+  border-radius: 50px;
+  cursor: pointer;
+  font-size: 0.85em;
+  font-weight: 800;
+  letter-spacing: 1px;
+  box-shadow: 0 4px 15px rgba(255, 94, 98, 0.4);
+  margin: 6px 0;
+  width: 100%;
+  text-transform: uppercase;
+}
+
+.island-card {
+  background: rgba(255, 255, 255, 0.08);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  padding: 15px;
+  margin: 8px 0;
+  width: 100%;
+  cursor: pointer;
+  box-sizing: border-box;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.island-card h3 {
+  margin: 0;
+  font-size: 1.05em;
+  color: #ff9966;
+  font-weight: 800;
+}
+
+.island-card span {
+  font-size: 0.75em;
+  color: #b2bec3;
+}
+
+.dialogue-box {
+  text-align: left;
+  background: rgba(0, 0, 0, 0.45);
+  padding: 14px;
+  border-radius: 12px;
+  border-left: 4px solid #ff5e62;
+  margin-bottom: 15px;
+  font-size: 0.82em;
+  line-height: 1.4;
+}
+
+/* Background for the home/menu screen (use Fond_menu.PNG) */
+#screen-home {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: url('Fond_menu.PNG') center/cover no-repeat;
+  background-size: cover;
+  background-position: center;
+  border-radius: 12px;
+  box-sizing: border-box;
+  padding: 25px;
+}
+</style>
+</head>
+<body>
+
+<div id="game-container">
+  <div id="screen-home" class="screen active">
+    <h1 class="game-title">NEW ISLAND</h1>
+    <p>Osez franchir les portes de la villa. Entre passion, secrets et trahisons, quelle sera votre stratégie ?</p>
+    <button class="btn" onclick="goToScreen('screen-islands')">Jouer</button>
+  </div>
+
+  <div id="screen-islands" class="screen">
+    <h2 style="font-weight: 900; color: #ff9966; margin-bottom: 5px; font-size: 1.4em; text-transform: uppercase;">Choisis ton camp</h2>
+    <p style="margin-bottom: 15px;">Sélectionne la villa où débutera ton aventure.</p>
+
+    <div class="island-card" onclick="selectIsland('Tempuras')">
+      <div>
+        <h3>🏝️ Villa Tempuras</h3>
+        <span>Ambiance électrique & initiatives directes</span>
+      </div>
+      <span style="font-size: 1.2em; color: #ff5e62;">➔</span>
+    </div>
+
+    <div class="island-card" onclick="selectIsland('Lagoon')">
+      <div>
+        <h3>🌊 Villa Lagoon</h3>
+        <span>Cadre intimiste & confidences profondes</span>
+      </div>
+      <span style="font-size: 1.2em; color: #ff5e62;">➔</span>
+    </div>
+
+    <button class="btn" onclick="goToScreen('screen-home')" style="background: rgba(255,255,255,0.1); margin-top: 10px;">Retour</button>
+  </div>
+
+  <div id="screen-game" class="screen"></div>
+</div>
+
+<script>
+const gameContainer = document.getElementById('game-container');
+const screenGame = document.getElementById('screen-game');
+
+const storyData = {
+  'Tempuras': {
+    title: '🏝️ Villa Tempuras',
+    chapters: [
+      {
+        ch: 1,
+        title: "Chapitre 1 : Incipit & Soirée White",
+        dialogue: "Nathan (Tentateur) : « Bienvenue sous le soleil de Tempuras. Oublie tes doutes de départ, ici on vient pour vivre le moment présent... »<br><br><em>[Événement] : Soirée WHITE sur la plage. Complicité grandissante avec Élisa.</em>",
+        choices: [
+          { text: "« Rester focalisé(e) sur mon couple d'origine. »", stat: 0 },
+          { text: "« Se laisser aller à la complicité avec Élisa (Affinité +1). »", stat: 1 }
+        ]
+      },
+      {
+        ch: 2,
+        title: "Chapitre 2 : L'Éveil Sensoriel (Quad & Argile)",
+        dialogue: "Clovis & Aaron : « Accroche-toi bien à la taille dans les tournants de la piste en Quad ! »<br><br><em>[Événement] : Atelier d'argile tactile au bord de l'eau.</em>",
+        choices: [
+          { text: "« Garder ses distances par respect pour le partenaire. »", stat: 0 },
+          { text: "« Profiter de la proximité corporelle de l'atelier argile. »", stat: 1 }
+        ]
+      },
+      {
+        ch: 3,
+        title: "Chapitre 3 : Arrivée du Couple & Le Baiser",
+        dialogue: "Un couple brisé fait son entrée surprise.<br><br>Élisa : « Regarde-les... Heureusement que tu es là pour me soutenir. »",
+        choices: [
+          { text: "« Rester strict(e) et distant(e) face au piège de l'île. »", stat: 0 },
+          { text: "« Céder à l'émotion et se rapprocher intimement d'Élisa. »", stat: 1 }
+        ]
+      },
+      {
+        ch: 4,
+        title: "Chapitre 4 : Le Date de 24 Heures sur l'Îlot",
+        dialogue: "Escapade hors de la villa : balade littorale, jacuzzi nocturne et le dilemme du couchage.<br><br><em>[Piège] : La caméra cachée des buissons guette...</em>",
+        choices: [
+          { text: "« Dormir dans des lits séparés par loyauté. »", stat: 0 },
+          { text: "« Partager le même lit et risquer la trahison en direct. »", stat: 1 }
+        ]
+      },
+      {
+        ch: 5,
+        title: "Chapitre 5 : Le Feu de Camp Ultime",
+        dialogue: "La Voix de l'Île : « L'heure du bilan a sonné devant le brasier. Regardez les images de votre parcours... »",
+        choices: [
+          { text: "Repartir avec son partenaire d'origine (Reconstruction).", ending: "partner" },
+          { text: "Repartir seul(e) (Lucidité et indépendance).", ending: "alone" },
+          { text: "Repartir avec le tentateur ou Élisa (Fin secrète).", ending: "tentateur" }
+        ]
+      }
+    ]
+  },
+  'Lagoon': {
+    title: '🌊 Villa Lagoon',
+    chapters: [
+      {
+        ch: 1,
+        title: "Chapitre 1 : Le Calme & Soirée Ange & Démon",
+        dialogue: "Nora : « La vue est idyllique ici, mais ne te fie pas aux apparences... »<br><br><em>[Événement] : Soirée costumée Ange & Démon.</em>",
+        choices: [
+          { text: "« Choisir le camp des Anges pour afficher une loyauté sans faille. »", stat: 0 },
+          { text: "« Choisir le camp des Démons et tester les limites de l'aventure. »", stat: 1 }
+        ]
+      },
+      {
+        ch: 2,
+        title: "Chapitre 2 : Sortie Quad & Atelier Tactile",
+        dialogue: "Marcus & Adam : « Viens, monte derrière moi, on teste des sentiers sauvages ! »",
+        choices: [
+          { text: "« Rester sur la réserve et refuser les contacts trop proches. »", stat: 0 },
+          { text: "« Profiter pleinement de l'adrénaline et de la proximité. »", stat: 1 }
+        ]
+      },
+      {
+        ch: 3,
+        title: "Chapitre 3 : Crise et Révélations au Feu",
+        dialogue: "Élisa : « Tu as vu ce qu'ils ont montré au feu de camp ? Ils manipulent tout... »",
+        choices: [
+          { text: "« Ne pas se laisser influencer par les images du feu de camp. »", stat: 0 },
+          { text: "« Se confier entièrement à Élisa et sceller une alliance intime. »", stat: 1 }
+        ]
+      },
+      {
+        ch: 4,
+        title: "Chapitre 4 : L'Îlot Isolé et le Dilemme du Coucher",
+        dialogue: "Journée complète hors du temps sur un îlot secret. La nuit tombe et le choix du couchage s'impose.",
+        choices: [
+          { text: "« Garder ses distances et dormir dans sa propre chambre. »", stat: 0 },
+          { text: "« Partager la nuit sous le même toit malgré les caméras. »", stat: 1 }
+        ]
+      },
+      {
+        ch: 5,
+        title: "Chapitre 5 : Le Brasier Final",
+        dialogue: "La Voix de l'Île : « Le lagon s'illumine pour la dernière fois. Le masque tombe. »",
+        choices: [
+          { text: "Repartir avec son partenaire d'origine (Reconstruction).", ending: "partner" },
+          { text: "Repartir seul(e) (Liberté totale).", ending: "alone" },
+          { text: "Repartir avec le tentateur ou Élisa (Fin secrète).", ending: "tentateur" }
+        ]
+      }
+    ]
+  }
+};
+
+let currentIsland = '';
+let currentChapterIndex = 0;
+let elisaAffinity = 0;
+
+function goToScreen(screenId) {
+  document.querySelectorAll('.screen').forEach(screen => screen.classList.remove('active'));
+  document.getElementById(screenId).classList.add('active');
+}
+
+function selectIsland(islandType) {
+  currentIsland = islandType;
+  currentChapterIndex = 0;
+  elisaAffinity = 0;
+  goToScreen('screen-game');
+  gameContainer.classList.remove('bg-tempuras', 'bg-lagoon');
+  gameContainer.classList.add(islandType === 'Tempuras' ? 'bg-tempuras' : 'bg-lagoon');
+  loadChapter();
+}
+
+function loadChapter() {
+  const islandData = storyData[currentIsland];
+  const chapter = islandData.chapters[currentChapterIndex];
+
+  let htmlContent = `
+    <div style="display: flex; justify-content: space-between; width: 100%; margin-bottom: 8px; font-size: 0.75em; color: #ff9966; font-weight: bold;">
+      <span>${islandData.title}</span>
+      <span>💖 Affinité Élisa : ${elisaAffinity}</span>
+    </div>
+    <h3 style="color: #ff5e62; font-size: 0.95em; margin-bottom: 10px;">${chapter.title}</h3>
+    <div class="dialogue-box">${chapter.dialogue}</div>
+    <div style="width: 100%;">`;
+
+  const isLast = currentChapterIndex === islandData.chapters.length - 1;
+  chapter.choices.forEach((choice, index) => {
+    const choiceText = (typeof choice === 'string') ? choice : (choice.text || '');
+    const stat = (typeof choice === 'object' && 'stat' in choice) ? choice.stat : 0;
+    htmlContent += `<button class="btn" style="font-size: 0.75em; padding: 10px 12px; margin: 5px 0;" onclick="makeChoice(${stat}, ${isLast ? index : 'null'})">${choiceText}</button>`;
+  });
+
+  htmlContent += `</div>`;
+  screenGame.innerHTML = htmlContent;
+}
+
+function makeChoice(statValue, choiceIndex) {
+  const islandData = storyData[currentIsland];
+  const chapter = islandData.chapters[currentChapterIndex];
+
+  if (statValue === 1) {
+    elisaAffinity++;
+  }
+
+  const isFinalChapter = currentChapterIndex === islandData.chapters.length - 1;
+  if (isFinalChapter && choiceIndex !== null && choiceIndex !== undefined) {
+    const chosen = chapter.choices[choiceIndex];
+    if (chosen && typeof chosen === 'object' && chosen.ending) {
+      let endingText = '';
+      if (chosen.ending === 'partner') {
+        endingText = "Tu choisis de repartir avec ton partenaire d'origine. Une reconstruction commence.";
+      } else if (chosen.ending === 'alone') {
+        endingText = "Tu pars seul(e), lucide et libre. L'aventure t'a transformé(e).";
+      } else if (chosen.ending === 'tentateur') {
+        endingText = "Fin secrète : tu repars avec le tentateur/Élisa. Les caméras s'éteignent sur votre complicité...";
+      } else {
+        endingText = "Fin : Ton choix scelle ta nouvelle trajectoire.";
+      }
+
+      screenGame.innerHTML = `
+        <h2 style="color: #ff9966; font-size: 1.3em; font-weight: 900; margin-bottom: 12px;">Bilan Final</h2>
+        <div class="dialogue-box">${endingText}</div>
+        <button class="btn" onclick="backToHome()">Recommencer une partie</button>
+      `;
+      return;
+    }
+  }
+
+  // Default progression
+  currentChapterIndex++;
+  if (currentChapterIndex < islandData.chapters.length) {
+    loadChapter();
+  } else {
+    let endingText = "Tu as traversé les épreuves des 5 semaines de l'aventure.";
+    if (elisaAffinity >= 3) {
+      endingText += "<br><br>✨ <strong>Fin Secrète Débloquée :</strong> Ton lien fusionnel avec Élisa a tout transformé. Vous repartez ensemble main dans la main !";
+    } else {
+      endingText += "<br><br>🔒 <em>Indice : Fais de meilleurs choix de proximité avec Élisa lors des chapitres précédents pour débloquer sa fin secrète.</em>";
+    }
+
+    screenGame.innerHTML = `
+      <h2 style="color: #ff9966; font-size: 1.3em; font-weight: 900; margin-bottom: 12px;">Bilan Final</h2>
+      <div class="dialogue-box">${endingText}</div>
+      <button class="btn" onclick="backToHome()">Recommencer une partie</button>
+    `;
+  }
+}
+
+function backToHome() {
+  goToScreen('screen-home');
+  gameContainer.classList.remove('bg-tempuras', 'bg-lagoon');
+}
+</script>
+</body>
+</html>
